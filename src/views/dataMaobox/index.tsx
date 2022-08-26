@@ -3,20 +3,20 @@ import "./index.less";
 
 const DataMaobox = () => {
 	const { Option } = Select;
-	const [form] = Form.useForm();
+	const [form] = Form.useForm()
 
 	const onGenderChange = (value: string) => {
 		switch (value) {
 			case "male":
-				form.setFieldsValue({ note: "Hi, man!" });
+				form.setFieldsValue({ note: "Hi, man!" })
 				return;
 			case "female":
-				form.setFieldsValue({ note: "Hi, lady!" });
-				return;
+				form.setFieldsValue({ note: "Hi, lady!" })
+				return
 			case "other":
-				form.setFieldsValue({ note: "Hi there!" });
+				form.setFieldsValue({ note: "Hi there!" })
 		}
-	};
+	}
 
 	const onFinish = (values: any) => {
 		message.success("提交的数据为 : " + JSON.stringify(values));
