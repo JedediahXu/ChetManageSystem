@@ -1,11 +1,10 @@
-# Hooks-Admin 🚀
+# React-Chet 🚀
 
 ### 介绍 📖
 
-🚀🚀🚀 Hooks Admin，基于 React18、React-Router v6、React-Hooks、Redux && Redux-Toolkit、TypeScript、Vite2、Ant-Design 开源的一套后台管理框架
+🚀🚀🚀 Chet博客的后台管理系统，基于一个开源项目进行了二次开发，涉及到的技术栈为： React18、React-Router v6、React-Hooks、Redux && Redux-Toolkit、TypeScript、Vite2、Ant-Design
 
 ### 文件资源目录 📚
-
 
 ```texts
 Geeker-Admin
