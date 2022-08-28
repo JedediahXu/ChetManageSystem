@@ -21,10 +21,8 @@ import { marked } from 'marked'
 import math from "@bytemd/plugin-math";
 import './juejin.scss'
 import { UploadOutlined } from '@ant-design/icons';
-import type { UploadProps } from 'antd';
 import { Button, message, Upload } from 'antd';
-import React from 'react';
-import { log } from "console";
+import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 
 
 const DataMd = () => {
@@ -36,12 +34,16 @@ const DataMd = () => {
 		let html = marked(value)
 	};
 
+
+
 	interface Image {
 		url: string
 		title: string
 		alt: string
 		<T = any>(date: T): Promise<T>
 	}
+
+
 
 	const [textvalue, settextvalue] = useState('');
 	const props: UploadProps = {
@@ -57,14 +59,77 @@ const DataMd = () => {
 			}
 		},
 	};
-
-
 	let removeClick = () => {
 		settextvalue('')
 	}
 
+
+	const [fileList, setFileList] = useState<UploadFile[]>([]);
+	const [uploading, setUploading] = useState(false);
+
+	const handleUpload = () => {
+		const formData = new FormData();
+		fileList.forEach(file => {
+			formData.append('cover_img', file as RcFile);
+			formData.append('title', 'xxx标题');
+			formData.append('content', 'xxx标题');
+			formData.append('state', '已发布');
+			formData.append('cate_id', '2');
+			formData.append('author_id', 'RN');
+			formData.append('introduce', 'xxx标题')
+		});
+		setUploading(true);
+		// You can use any AJAX library you like
+		fetch('http://127.0.0.1:3007/api/article/addArticle', {
+			method: 'POST',
+			body: formData,
+		})
+			.then(res => res.json())
+			.then(() => {
+				setFileList([]);
+				message.success('upload successfully.');
+			})
+			.catch(() => {
+				message.error('upload failed.');
+			})
+			.finally(() => {
+				setUploading(false);
+			});
+	};
+
+	const articles: UploadProps = {
+		onRemove: file => {
+			const index = fileList.indexOf(file);
+			const newFileList = fileList.slice();
+			newFileList.splice(index, 1);
+			setFileList(newFileList);
+		},
+		beforeUpload: file => {
+			setFileList([...fileList, file]);
+
+			return false;
+		},
+		fileList,
+	};
+
+
+
+
+
 	return (
 		<div>
+			<Upload {...articles}>
+				<Button icon={<UploadOutlined />}>Select File</Button>
+			</Upload>
+			<Button
+				type="primary"
+				onClick={handleUpload}
+				disabled={fileList.length === 0}
+				loading={uploading}
+				style={{ marginTop: 16 }}
+			>
+				{uploading ? 'Uploading' : 'Start Upload'}
+			</Button>
 			<Button type="primary" onClick={handleClick} htmlType="submit" >
 				输出
 			</Button>
