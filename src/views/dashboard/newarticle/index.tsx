@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { Editor, Viewer } from '@bytemd/react'
 import gfm from '@bytemd/plugin-gfm'
@@ -9,7 +10,6 @@ import gemoji from '@bytemd/plugin-gemoji'
 import mediumZoom from '@bytemd/plugin-medium-zoom'
 import mermaid from '@bytemd/plugin-mermaid'
 import mathssr from '@bytemd/plugin-math-ssr'
-import { getProcessor } from 'bytemd'
 import zhHans from 'bytemd/locales/zh_Hans.json'
 import gfmLocale from '@bytemd/plugin-gfm/locales/zh_Hans.json';
 import mathLocale from '@bytemd/plugin-math/locales/zh_Hans.json';
@@ -17,35 +17,71 @@ import mermaidLocale from '@bytemd/plugin-mermaid/locales/zh_Hans.json';
 import 'highlight.js/styles/vs.css'
 import "./index.less";
 import 'bytemd/dist/index.css'
-import { Button } from "antd";
 import { marked } from 'marked'
 import math from "@bytemd/plugin-math";
-import './juejin.scss'//阅览风格样式
+import './juejin.scss'
+import { UploadOutlined } from '@ant-design/icons';
+import type { UploadProps } from 'antd';
+import { Button, message, Upload } from 'antd';
+import React from 'react';
+import { log } from "console";
+
 
 const DataMd = () => {
-	const plugins = [gfm({ locale: gfmLocale }), gemoji(), mermaid(), highlight(), math(), mermaid({ locale: mermaidLocale }),
+	const plugins = [gfm({ locale: gfmLocale }), gemoji(), highlight(), math(), mermaid({ locale: mermaidLocale }),
 	mathssr({ locale: mathLocale }), mediumZoom(), breaks(), footnotes(), frontmatter()];
+
 	const [value, setValue] = useState('');
-	let handleClick = () => {
-		// let html = marked(value) // <h3>hello markdown</h3>
-		console.log(value);
+	let handleClick = async () => {
+		let html = marked(value)
 	};
+
+	interface Image {
+		url: string
+		title: string
+		alt: string
+		<T = any>(date: T): Promise<T>
+	}
+
+	const [textvalue, settextvalue] = useState('');
+	const props: UploadProps = {
+		name: 'photo',
+		action: 'http://127.0.0.1:3007/api/article/mdPhoto',
+		headers: {
+			authorization: 'authorization-text',
+		},
+		showUploadList: false,
+		onChange(info) {
+			if (info.file.status !== 'uploading') {
+				settextvalue(`![${info.file.response.name}](${info.file.response.data})`)
+			}
+		},
+	};
+
+
+	let removeClick = () => {
+		settextvalue('')
+	}
+
 	return (
 		<div>
 			<Button type="primary" onClick={handleClick} htmlType="submit" >
 				输出
 			</Button>
+			<Upload {...props}>
+				<Button icon={<UploadOutlined />}>Click to Upload</Button>
+			</Upload>
+			<Button type="primary" onClick={removeClick} htmlType="submit" >
+				清除照片
+			</Button>
+			<div>{textvalue}</div>
 			<div className="page-wrap" >
 				<Editor
 					locale={zhHans}
-					// 内部的值
 					value={value}
-					// 插件
 					plugins={plugins}
-					// 动态修改值
 					onChange={v => setValue(v)}
 				/>
-				<Viewer value={value} plugins={plugins} />
 			</div>
 		</div>
 	)

@@ -46,7 +46,13 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 					target: "https://mock.mengxuegu.com/mock/630710943b4e0430e6b5d5d4/example", // easymock
 					changeOrigin: true,
 					rewrite: path => path.replace(/^\/api/, "")
-				}
+				},
+				'/apis': {
+					target: 'http://127.0.0.1:3007',
+					ws: true,
+					changeOrigin: true,
+					rewrite: (path) => path.replace(/^\/apis/, ''),
+				},
 			}
 		},
 		// plugins
