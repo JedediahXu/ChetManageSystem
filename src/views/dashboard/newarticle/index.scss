@@ -1,5 +1,23 @@
+.outer-style {
+	display: flex;
+	width: 50rem;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.ant-form {
+	width: 45rem;
+}
+
 .bytemd {
 	height: calc(100vh - 100px);
+	width: 55rem;
+	margin: 0 auto;
+}
+
+
+.button-Center-left {
+	margin-left: 20px;
 }
 
 .markdown-body {
