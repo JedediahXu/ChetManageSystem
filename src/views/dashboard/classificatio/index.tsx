@@ -7,7 +7,9 @@ const DataScreen = () => {
 		console.log(res);
 	};
 	return (
-		<div className="content-box">
+		<div>
+			<div className='font-size'>新撰文章</div>
+			<hr />
 			<span className="text">超级看板内容填充 🍓🍇🍈🍉</span>
 			<Button type="primary" onClick={requestMenuList}>
 				点我发起网络请求 😎

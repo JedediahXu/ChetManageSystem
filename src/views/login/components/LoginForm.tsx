@@ -74,3 +74,4 @@ const LoginForm = (props: any) => {
 
 const mapDispatchToProps = { setToken, setTabsList };
 export default connect(null, mapDispatchToProps)(LoginForm);
+

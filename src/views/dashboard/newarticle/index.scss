@@ -13,11 +13,16 @@
 	height: calc(100vh - 100px);
 	width: 55rem;
 	margin: 0 auto;
+	z-index: 999;
 }
-
 
 .button-Center-left {
 	margin-left: 20px;
+}
+
+.font-size {
+	font-weight: 500;
+	font-size: 16px;
 }
 
 .markdown-body {
