@@ -1,9 +1,6 @@
-import {
-	Button, message, Upload, Cascader, DatePicker, Form, Input,
-	InputNumber, Radio, Select, Switch, TreeSelect, FormInstance, Result,
-} from 'antd';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import mermaidLocale from '@bytemd/plugin-mermaid/locales/zh_Hans.json';
+import { Button, message, Upload, Form, Input, Select, } from 'antd';
 import mathLocale from '@bytemd/plugin-math/locales/zh_Hans.json';
 import gfmLocale from '@bytemd/plugin-gfm/locales/zh_Hans.json';
 import frontmatter from '@bytemd/plugin-frontmatter'
@@ -11,36 +8,35 @@ import mediumZoom from '@bytemd/plugin-medium-zoom'
 import { UploadOutlined } from '@ant-design/icons';
 import footnotes from '@bytemd/plugin-footnotes'
 import highlight from '@bytemd/plugin-highlight'
-import { Editor, Viewer } from '@bytemd/react'
-import { useEffect, useState } from "react";
-import { marked } from 'marked'
-import gfm from '@bytemd/plugin-gfm'
-import breaks from '@bytemd/plugin-breaks'
-import math from "@bytemd/plugin-math";
-import gemoji from '@bytemd/plugin-gemoji'
-import mermaid from '@bytemd/plugin-mermaid'
-import mathssr from '@bytemd/plugin-math-ssr'
 import zhHans from 'bytemd/locales/zh_Hans.json'
+import { Editor, Viewer } from '@bytemd/react'
+import { getType } from "@/api/modules/login";
+import mathssr from '@bytemd/plugin-math-ssr'
+import { useEffect, useState } from "react";
+import mermaid from '@bytemd/plugin-mermaid'
+import gemoji from '@bytemd/plugin-gemoji'
+import gfm from '@bytemd/plugin-gfm'
 import 'highlight.js/styles/vs.css'
+import { marked } from 'marked'
 import 'bytemd/dist/index.css'
 import './index.scss'
-import { getType } from "@/api/modules/login";
 
 type SizeType = Parameters<typeof Form>[0]['size'];
 
 const DataMd = () => {
+	const { TextArea } = Input;
+	const [form] = Form.useForm();
 	const [value, setValue] = useState('');
 	const [textvalue, settextvalue] = useState('');
-	const [typevalue, settypevalue] = useState<any[]>([]);
-	const [form] = Form.useForm();
-	const [fileList, setFileList] = useState<UploadFile[]>([]);
 	const [uploading, setUploading] = useState(false);
-	const { TextArea } = Input;
+	const [typevalue, settypevalue] = useState<any[]>([]);
+	const [fileList, setFileList] = useState<UploadFile[]>([]);
 	const [componentSize, setComponentSize] = useState<SizeType | 'default'>('default');
 
 	const plugins = [gfm({ locale: gfmLocale }), gemoji(), highlight(), mermaid({ locale: mermaidLocale }),
 	mathssr({ locale: mathLocale }), mediumZoom(), footnotes(), frontmatter()];
 
+	// * 表单请求
 	const props: UploadProps = {
 		name: 'photo',
 		action: 'http://127.0.0.1:3007/api/article/mdPhoto',
@@ -55,11 +51,12 @@ const DataMd = () => {
 		},
 	};
 
-	//清空照片元素
+	// * 清空元素
 	const removeClick = () => {
 		settextvalue('')
 	}
 
+	// * 照片上传
 	const handleUpload = () => {
 		let html = marked(value)
 		const FromData = form.getFieldsValue()
@@ -94,6 +91,7 @@ const DataMd = () => {
 			});
 	};
 
+	// * 文章封面
 	const articles: UploadProps = {
 		onRemove: file => {
 			const index = fileList.indexOf(file);
@@ -108,6 +106,7 @@ const DataMd = () => {
 		fileList,
 	};
 
+	// * 分类请求
 	const requestMenuList = async () => {
 		const result: any = await getType();
 		settypevalue(result.data)
