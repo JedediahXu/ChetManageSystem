@@ -21,6 +21,12 @@ export const getType = () => {
 };
 
 
+export const getDelete = (Id: any) => {
+	return http.get(`/abc` + PORT3 + `/article/deletecate/${Id}`);
+};
+
+
+
 // * 获取按钮权限
 export const getAuthorButtons = () => {
 	return http.get<Login.ResAuthButtons>(`/api` + PORT1 + `/auth/buttons`);

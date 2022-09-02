@@ -1,6 +1,6 @@
-import { getAuthorButtons, getType } from "@/api/modules/login";
+import { Button, message, Upload, Popconfirm, List, Skeleton, Modal, Form, Input, ConfigProvider } from 'antd';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
-import { Button, message, Upload, List, Skeleton, Modal, Form, Input } from 'antd';
+import { getDelete, getType } from "@/api/modules/login";
 import React, { useEffect, useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import './index.less'
@@ -17,47 +17,16 @@ interface DataType {
 
 const DataScreen = () => {
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
+	const [initLoading, setInitLoading] = useState(true);
 	const [uploading, setUploading] = useState(false);
+	const [list, setList] = useState<DataType[]>([]);
 	const [visible, setVisible] = useState(false);
+	const [revise, setRevise] = useState(false);
+	const [reviseId, setReviseId] = useState(0);
 	const [form] = Form.useForm();
 	const { TextArea } = Input;
 
-	// * 新增文章请求接口
-	const getMenuList = async () => {
-		setVisible(false)
-		const FromData = form.getFieldsValue()
-		console.log(FromData);
-		const formData = new FormData();
-		fileList.forEach(file => {
-			formData.append('cate_photos', file as RcFile); //照片
-			formData.append('name', FromData.title); //标题
-			formData.append('describe', FromData.content); //内容
-			formData.append('alias', FromData.title); //标题
-		});
-		setUploading(true);
-		fetch('http://127.0.0.1:3007/api/article/addcates', {
-			method: 'POST',
-			body: formData,
-		})
-			.then(res => res.json())
-			.then(() => {
-				setFileList([]);
-				message.success('upload successfully.');
-				form.resetFields()
-			})
-			.catch(() => {
-				message.error('upload failed.');
-			})
-			.finally(() => {
-				setUploading(false);
-			});
-		// 	const res = await getAuthorButtons();
-		console.log('新增文章');
-	};
-
-	const [initLoading, setInitLoading] = useState(true);
-	const [list, setList] = useState<DataType[]>([]);
-
+	// * 加载数据
 	const requestMenuList = async () => {
 		const result: any = await getType();
 		setList(result.data);
@@ -68,9 +37,96 @@ const DataScreen = () => {
 		requestMenuList()
 	}, []);
 
-	let reviseList = () => {
-		console.log('111');
+	// * 新增文章&修改文章
+	const getMenuList = async () => {
+		const FromData = form.getFieldsValue()
+		const formData = new FormData();
+		console.log(FromData);
+		for (var key in FromData) {
+			if (!FromData[key]) {
+				return message.error('请将必填项补充完整.')
+			};
+		}
+		if (revise) {
+			//修改表单
+			fileList.forEach(file => {
+				formData.append('cate_photos', file as RcFile); //照片
+				formData.append('name', FromData.title); //标题
+				formData.append('describe', FromData.content); //内容
+				formData.append('alias', FromData.title); //标题
+				formData.append('Id', reviseId.toString()); //标题
+			});
+			setUploading(true);
+			fetch('http://127.0.0.1:3007/api/article/updatecate', {
+				method: 'POST',
+				body: formData,
+			})
+				.then(res => res.json())
+				.then(() => {
+					setFileList([]);
+					message.success('修改成功！');
+					form.resetFields()
+					setRevise(true)
+				})
+				.catch(() => {
+					message.error('upload failed.');
+				})
+				.finally(() => {
+					setUploading(false);
+				});
+		} else {
+			//新增表单
+			fileList.forEach(file => {
+				formData.append('cate_photos', file as RcFile); //照片
+				formData.append('name', FromData.title); //标题
+				formData.append('describe', FromData.content); //内容
+				formData.append('alias', FromData.title); //标题
+			});
+			setUploading(true);
+			fetch('http://127.0.0.1:3007/api/article/addcates', {
+				method: 'POST',
+				body: formData,
+			})
+				.then(res => res.json())
+				.then(() => {
+					setFileList([]);
+					message.success('新增成功！');
+					form.resetFields()
+					setRevise(true)
+				})
+				.catch(() => {
+					message.error('upload failed.');
+				})
+				.finally(() => {
+					setUploading(false);
+				});
+		}
+		setVisible(false)
+		requestMenuList()
+	};
+
+	// * 修改分类
+	const reviseList = (item: any) => {
+		setVisible(true)
+		setReviseId(item.Id)
+		setRevise(true)
+		form.setFieldsValue({
+			title: item.name,
+			content: item.describe,
+			alias: item.alias,
+			Id: item.Id
+		});
 	}
+
+	// * 删除分类
+	const deleteList = (item: any) => {
+		setReviseId(item.Id)
+	}
+	const confirm = async () => {
+		await getDelete(reviseId)
+		message.success('删除成功！');
+		requestMenuList()
+	};
 
 	// * 分类封面
 	const articles: UploadProps = {
@@ -87,7 +143,6 @@ const DataScreen = () => {
 		fileList,
 	};
 
-
 	return (
 		<div>
 			<div className='font-size'>新撰文章</div>
@@ -102,7 +157,16 @@ const DataScreen = () => {
 				dataSource={list}
 				renderItem={item => (
 					<List.Item
-						actions={[<a key="list-loadmore-edit" onClick={reviseList}>修改</a>, <a key="list-loadmore-more">删除</a>]}
+						actions={[<a key="list-loadmore-edit" onClick={() => reviseList(item)}>修改</a>,
+						<Popconfirm
+							title="是否确定删除?"
+							onConfirm={confirm}
+							okText="Yes"
+							cancelText="No"
+						>
+							<a key="list-loadmore-more" onClick={() => deleteList(item)}>删除</a>
+						</Popconfirm>
+						]}
 					>
 						<Skeleton avatar title={false} loading={item.loading} active>
 							<List.Item.Meta
@@ -127,22 +191,21 @@ const DataScreen = () => {
 					wrapperCol={{ span: 21 }}
 					layout="horizontal"
 				>
-					<Form.Item label="分类名称" name="title" >
+					<Form.Item label="分类名称" name="title" rules={[{ required: true, message: 'Please input your 分类名称!' }]} >
 						<Input />
 					</Form.Item>
-					<Form.Item label="分类别名" name="alias" >
+					<Form.Item label="分类别名" name="alias" rules={[{ required: true, message: 'Please input your 分类别名!' }]} >
 						<Input />
 					</Form.Item>
-					<Form.Item label="分类描述" name="content">
+					<Form.Item label="分类描述" name="content" rules={[{ required: true, message: 'Please input your 分类描述!' }]}>
 						<TextArea rows={4} />
 					</Form.Item>
 
-					<Form.Item label="分类封面">
+					<Form.Item label="分类封面" name="xxx" rules={[{ required: true, message: 'Please input your 分类描述!' }]}>
 						<Upload {...articles}>
 							<Button icon={<UploadOutlined />}>上传分类照片</Button>
 						</Upload>
 					</Form.Item>
-
 				</Form>
 			</Modal>
 		</div>
