@@ -1,321 +1,83 @@
-import { useEffect, useRef } from "react";
-import * as echarts from "echarts";
-import "echarts-liquidfill";
-import "./index.less";
+import { UploadOutlined } from '@ant-design/icons';
+import { Button, message, Upload } from 'antd';
+import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import './index.less'
 
-const dataPhoto = () => {
-	const echartsRef = useRef<HTMLDivElement>(null);
-	let myChart: echarts.EChartsType;
-	let value = 0.5;
-	let data = [value, value, value];
-	let option: echarts.EChartsCoreOption = {
-		title: [
-			{
-				text: "预约量",
-				x: "25%",
-				y: 30,
-				textAlign: "center",
-				textStyle: {
-					color: "#a1a1a1",
-					fontSize: 16,
-					fontFamily: "Microsoft Yahei",
-					fontWeight: "100",
-					textAlign: "center"
-				}
-			},
-			{
-				text: "实时客流量",
-				x: "75%",
-				y: 30,
-				textAlign: "center",
-				textStyle: {
-					color: "#a1a1a1",
-					fontSize: 16,
-					fontFamily: "Microsoft Yahei",
-					fontWeight: "100",
-					textAlign: "center"
-				}
-			},
-			{
-				text: (value * 100).toFixed(0) + "%",
-				left: "25%",
-				top: "38%",
-				textAlign: "center",
-				textStyle: {
-					fontSize: "50",
-					fontWeight: "300",
-					color: "#a06a0a",
-					textAlign: "center",
-					textBorderColor: "rgba(0, 0, 0, 0)",
-					textShadowColor: "#fff",
-					textShadowBlur: "0",
-					textShadowOffsetX: 0,
-					textShadowOffsetY: 1
-				}
-			},
-			{
-				text: (value * 100).toFixed(0) + "%",
-				left: "75%",
-				top: "38%",
-				textAlign: "center",
-				textStyle: {
-					fontSize: "50",
-					fontWeight: "300",
-					color: "#02456d",
-					textAlign: "center",
-					textBorderColor: "rgba(0, 0, 0, 0)",
-					textShadowColor: "#fff",
-					textShadowBlur: "0",
-					textShadowOffsetX: 0,
-					textShadowOffsetY: 1
-				}
-			}
-		],
-		series: [
-			{
-				type: "liquidFill",
-				radius: "50%",
-				z: 6,
-				center: ["25%", "50%"],
-				color: [
-					{
-						type: "linear",
-						x: 0,
-						y: 0,
-						x2: 0,
-						y2: 1,
-						colorStops: [
-							{
-								offset: 1,
-								color: "rgba(251, 173, 23, 0)"
-							},
-							{
-								offset: 0.5,
-								color: "rgba(251, 173, 23, .2)"
-							},
-							{
-								offset: 0,
-								color: "rgba(251, 173, 23, 1)"
-							}
-						],
-						globalCoord: false
-					}
-				],
-				data: data,
-				backgroundStyle: {
-					borderWidth: 1,
-					color: "transparent"
-				},
-				label: {
-					normal: {
-						formatter: ""
-					}
-				},
-				outline: {
-					show: true,
-					itemStyle: {
-						borderWidth: 0
-					},
-					borderDistance: 0
-				}
-			},
-			{
-				name: "第二层白边",
-				type: "pie",
-				z: 3,
-				radius: ["0%", "55%"],
-				center: ["25%", "50%"],
-				hoverAnimation: false,
-				itemStyle: {
-					normal: {
-						label: {
-							show: false
-						}
-					}
-				},
-				data: [
-					{
-						value: 100,
-						itemStyle: {
-							normal: {
-								color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-									{
-										offset: 0,
-										color: "#fefefe"
-									},
-									{
-										offset: 1,
-										color: "#e7e8ea"
-									}
-								])
-							}
-						}
-					},
-					{
-						value: 0,
-						itemStyle: {
-							normal: {
-								color: "transparent"
-							}
-						}
-					}
-				]
-			},
-			{
-				name: "最外绿边",
-				type: "pie",
-				z: 1,
-				radius: ["0%", "58%"],
-				center: ["25%", "50%"],
-				hoverAnimation: false,
-				itemStyle: {
-					normal: {
-						label: {
-							show: false
-						}
-					}
-				},
-				data: [
-					{
-						value: 100,
-						itemStyle: {
-							color: "#fdc56e"
-						}
-					},
-					{
-						value: 0,
-						itemStyle: {
-							normal: {
-								color: "transparent"
-							}
-						}
-					}
-				]
-			},
-			{
-				type: "liquidFill",
-				radius: "50%",
-				z: 6,
-				center: ["75%", "50%"],
-				color: ["#c1dce7", "#90d3f0", "#009bdb"],
-				data: [0.6, { value: 0.5, direction: "left" }, 0.4, 0.3],
-				backgroundStyle: {
-					borderWidth: 1,
-					color: "transparent"
-				},
-				label: {
-					normal: {
-						formatter: ""
-					}
-				},
-				outline: {
-					show: true,
-					itemStyle: {
-						borderWidth: 0
-					},
-					borderDistance: 0
-				}
-			},
-			{
-				name: "第二层白边",
-				type: "pie",
-				z: 3,
-				radius: ["0%", "55%"],
-				center: ["75%", "50%"],
-				hoverAnimation: false,
-				itemStyle: {
-					normal: {
-						label: {
-							show: false
-						}
-					}
-				},
-				data: [
-					{
-						value: 100,
-						itemStyle: {
-							normal: {
-								color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-									{
-										offset: 0,
-										color: "#fefefe"
-									},
-									{
-										offset: 1,
-										color: "#e7e8ea"
-									}
-								])
-							}
-						}
-					},
-					{
-						value: 0,
-						itemStyle: {
-							normal: {
-								color: "transparent"
-							}
-						}
-					}
-				]
-			},
-			{
-				name: "最外蓝边",
-				type: "pie",
-				z: 1,
-				radius: ["0%", "58%"],
-				center: ["75%", "50%"],
-				hoverAnimation: false,
-				itemStyle: {
-					normal: {
-						label: {
-							show: false
-						}
-					}
-				},
-				data: [
-					{
-						value: 100,
-						itemStyle: {
-							color: "#07a2e3"
-						}
-					},
-					{
-						value: 0,
-						itemStyle: {
-							normal: {
-								color: "transparent"
-							}
-						}
-					}
-				]
-			}
-		]
+import React, { useState } from 'react';
+
+const DataScreen = () => {
+
+	const [fileList, setFileList] = useState<UploadFile[]>([]);
+	const [uploading, setUploading] = useState(false);
+
+	const handleUpload = () => {
+		if (fileList.length > 2) {
+			message.error('一次只能上传,一张图片和一张缩略图！');
+			return
+		}
+		let firstSize = fileList[0].size!
+		let secondSize = fileList[1].size!
+		if (firstSize > secondSize) {
+			const formData = new FormData();
+			formData.append('photo', fileList[0] as RcFile);
+			formData.append('thumbnail_photo', fileList[1] as RcFile);
+			setUploading(true);
+			fetch('http://127.0.0.1:3007/api/article/addPhoto', {
+				method: 'POST',
+				body: formData,
+			})
+				.then(res => res.json())
+				.then(() => {
+					setFileList([]);
+					message.success('上传成功！');
+				})
+				.catch(() => {
+					message.error('上传失败！');
+				})
+				.finally(() => {
+					setUploading(false);
+				});
+		} else {
+			message.error('缩略图过大，请重新上传！');
+		}
 	};
 
-	const setEcharts = () => {
-		option && myChart.setOption(option);
+	const props: UploadProps = {
+		onRemove: file => {
+
+			const index = fileList.indexOf(file);
+			const newFileList = fileList.slice();
+			newFileList.splice(index, 1);
+			setFileList(newFileList);
+		},
+		beforeUpload: file => {
+			setFileList([...fileList, file]);
+			return false;
+		},
+		fileList,
 	};
 
-	useEffect(() => {
-		myChart = echarts.init(echartsRef.current as HTMLDivElement);
-		const echartsResize = () => {
-			myChart && myChart.resize();
-		};
-		window.addEventListener("resize", echartsResize, false);
-
-		setEcharts();
-		return () => {
-			window.removeEventListener("resize", echartsResize);
-			myChart && myChart.dispose();
-		};
-	}, []);
-
-	// 只判断数据的变化来动态setEcharts
-	useEffect(() => {
-		setEcharts();
-	}, [value]);
-
-	return <div ref={echartsRef} className="content-box"></div>;
+	return (
+		<div>
+			<div className='font-size'>照片上传</div>
+			<hr />
+			<div className='image-format'>
+				<div className='images-extra'>第一次上传为正常图 && 第二次上传为缩略图</div>
+				<Upload {...props}>
+					<Button icon={<UploadOutlined />}>正常图片 & 缩略图</Button>
+				</Upload>
+				<Button
+					type="primary"
+					onClick={handleUpload}
+					disabled={fileList.length === 0}
+					loading={uploading}
+					style={{ marginTop: 16 }}
+				>
+					{uploading ? '保存照片' : '请先上传'}
+				</Button>
+			</div>
+		</div>
+	);
 };
 
-export default dataPhoto;
+export default DataScreen;

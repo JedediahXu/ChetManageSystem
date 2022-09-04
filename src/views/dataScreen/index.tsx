@@ -8,9 +8,9 @@ const DataScreen = () => {
 	};
 	return (
 		<div className="content-box">
-			<span className="text">超级看板内容填充 🍓🍇🍈🍉</span>
+			<span className="text">后期开发！ 🍓🍇🍈🍉</span>
 			<Button type="primary" onClick={requestMenuList}>
-				点我发起网络请求 😎
+				😎😎😎
 			</Button>
 		</div>
 	);

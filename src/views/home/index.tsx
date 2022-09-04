@@ -5,7 +5,6 @@ const Home = () => {
 	return (
 		<div className="home">
 			欢迎进入此系统！
-			{/* <img src={welcome} alt="welcome" /> */}
 		</div>
 	);
 };

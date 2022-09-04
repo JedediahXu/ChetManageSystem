@@ -178,7 +178,7 @@ const DataScreen = () => {
 				)}
 			/>
 			<Modal
-				title="新增类型"
+				title="新增类型 & 修改类型"
 				centered
 				visible={visible}
 				onOk={getMenuList}
