@@ -135,13 +135,13 @@ const DataMd = () => {
 					initialValues={{ size: componentSize }}
 					size={componentSize as SizeType}
 				>
-					<Form.Item label="标题" name="title" >
+					<Form.Item label="标题" name="title" rules={[{ required: true, message: 'Please input your 标题!' }]}>
 						<Input />
 					</Form.Item>
-					<Form.Item label="文章描述" name="content">
+					<Form.Item label="文章描述" name="content" rules={[{ required: true, message: 'Please input your 文章描述!' }]}>
 						<TextArea rows={4} />
 					</Form.Item>
-					<Form.Item label="分类" name="cate_id"  >
+					<Form.Item label="分类" name="cate_id" rules={[{ required: true, message: 'Please input your 分类!' }]} >
 						<Select labelInValue>
 							{
 								typevalue.map((v, k) => (
@@ -150,12 +150,12 @@ const DataMd = () => {
 							}
 						</Select>
 					</Form.Item>
-					<Form.Item label="封面">
+					<Form.Item label="封面" name="articles" rules={[{ required: true, message: 'Please input your 封面!' }]}>
 						<Upload {...articles}>
 							<Button icon={<UploadOutlined />}>上传文章标题照片</Button>
 						</Upload>
 					</Form.Item>
-					<Form.Item label="文章照片">
+					<Form.Item label="文章照片" >
 						<Upload {...props}>
 							<Button icon={<UploadOutlined />}>上传照片</Button>
 						</Upload>
@@ -166,7 +166,7 @@ const DataMd = () => {
 					<Form.Item label="图片链接">
 						<div>{textvalue}</div>
 					</Form.Item>
-					<Form.Item label="文章内容">
+					<Form.Item label="文章内容" name="value" rules={[{ required: true, message: 'Please input your 文章内容!' }]}>
 						<Editor
 							locale={zhHans}
 							value={value}
