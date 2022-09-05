@@ -22,12 +22,12 @@ const LoginForm = (props: any) => {
 	const onFinish = async (loginForm: Login.ReqLoginForm) => {
 		try {
 			setLoading(true);
-			loginForm.username = 'Chet';
-			loginForm.password = md5(loginForm.password);
+			loginForm.username = 'ChetSerenade';
+			loginForm.password = loginForm.password;
 			const { data } = await loginApi(loginForm);
+			console.log(data);
 			setToken(data?.access_token);
 			setTabsList([]);
-			message.success("登录成功！");
 			navigate(HOME_URL);
 		} finally {
 			setLoading(false);

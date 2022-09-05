@@ -4,6 +4,7 @@ import { getDelete, getType } from "@/api/modules/login";
 import React, { useEffect, useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import './index.less'
+import { store } from "@/redux";
 
 interface DataType {
 	Id?: number;
@@ -39,15 +40,18 @@ const DataScreen = () => {
 
 	// * 新增文章&修改文章
 	const getMenuList = async () => {
+
 		const FromData = form.getFieldsValue()
 		const formData = new FormData();
-		console.log(FromData);
 		for (var key in FromData) {
 			if (!FromData[key]) {
 				return message.error('请将必填项补充完整.')
 			};
 		}
 		if (revise) {
+			const token: string = store.getState().global.token;
+			let myHeaders = new Headers();
+			myHeaders.append("Authorization", token);
 			//修改表单
 			fileList.forEach(file => {
 				formData.append('cate_photos', file as RcFile); //照片
@@ -56,10 +60,12 @@ const DataScreen = () => {
 				formData.append('alias', FromData.title); //标题
 				formData.append('Id', reviseId.toString()); //标题
 			});
+
 			setUploading(true);
-			fetch('http://127.0.0.1:3007/api/article/updatecate', {
+			fetch('http://127.0.0.1:3007/my/article/updatecate', {
 				method: 'POST',
 				body: formData,
+				headers: myHeaders,
 			})
 				.then(res => res.json())
 				.then(() => {
@@ -75,6 +81,9 @@ const DataScreen = () => {
 					setUploading(false);
 				});
 		} else {
+			const token: string = store.getState().global.token;
+			let myHeaders = new Headers();
+			myHeaders.append("Authorization", token);
 			//新增表单
 			fileList.forEach(file => {
 				formData.append('cate_photos', file as RcFile); //照片
@@ -83,9 +92,10 @@ const DataScreen = () => {
 				formData.append('alias', FromData.title); //标题
 			});
 			setUploading(true);
-			fetch('http://127.0.0.1:3007/api/article/addcates', {
+			fetch('http://127.0.0.1:3007/my/article/addcates', {
 				method: 'POST',
 				body: formData,
+				headers: myHeaders,
 			})
 				.then(res => res.json())
 				.then(() => {

@@ -1,6 +1,7 @@
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, message, Upload } from 'antd';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import { store } from "@/redux";
 import './index.less'
 
 import React, { useState } from 'react';
@@ -18,13 +19,17 @@ const DataScreen = () => {
 		let firstSize = fileList[0].size!
 		let secondSize = fileList[1].size!
 		if (firstSize > secondSize) {
+			const token: string = store.getState().global.token;
+			let myHeaders = new Headers();
+			myHeaders.append("Authorization", token);
 			const formData = new FormData();
 			formData.append('photo', fileList[0] as RcFile);
 			formData.append('thumbnail_photo', fileList[1] as RcFile);
 			setUploading(true);
-			fetch('http://127.0.0.1:3007/api/article/addPhoto', {
+			fetch('http://127.0.0.1:3007/my/article/addPhoto', {
 				method: 'POST',
 				body: formData,
+				headers: myHeaders,
 			})
 				.then(res => res.json())
 				.then(() => {

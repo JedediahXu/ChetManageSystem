@@ -20,6 +20,7 @@ import 'highlight.js/styles/vs.css'
 import { marked } from 'marked'
 import 'bytemd/dist/index.css'
 import './index.scss'
+import { store } from "@/redux";
 
 type SizeType = Parameters<typeof Form>[0]['size'];
 
@@ -35,13 +36,13 @@ const DataMd = () => {
 
 	const plugins = [gfm({ locale: gfmLocale }), gemoji(), highlight(), mermaid({ locale: mermaidLocale }),
 	mathssr({ locale: mathLocale }), mediumZoom(), footnotes(), frontmatter()];
-
+	const token: string = store.getState().global.token;
 	// * 表单请求
 	const props: UploadProps = {
 		name: 'photo',
 		action: 'http://127.0.0.1:3007/api/article/mdPhoto',
 		headers: {
-			authorization: 'authorization-text',
+			Authorization: token,
 		},
 		showUploadList: false,
 		onChange(info) {
@@ -58,6 +59,10 @@ const DataMd = () => {
 
 	// * 照片上传
 	const handleUpload = () => {
+		const token: string = store.getState().global.token;
+		let myHeaders = new Headers();
+		myHeaders.append("Authorization", token);
+
 		let html = marked(value)
 		const FromData = form.getFieldsValue()
 		const formData = new FormData();
@@ -71,9 +76,10 @@ const DataMd = () => {
 			formData.append('content', html) //主题标题
 		});
 		setUploading(true);
-		fetch('http://127.0.0.1:3007/api/article/addArticle', {
+		fetch('http://127.0.0.1:3007/my/article/addArticle', {
 			method: 'POST',
 			body: formData,
+			headers: myHeaders,
 		})
 			.then(res => res.json())
 			.then(() => {

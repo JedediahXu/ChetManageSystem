@@ -42,11 +42,6 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 			// 代理跨域（mock 不需要配置，这里只是个事列）
 			//https://mock.mengxuegu.com/mock/630710943b4e0430e6b5d5d4/example
 			proxy: {
-				"/api": {
-					target: "https://mock.mengxuegu.com/mock/630710943b4e0430e6b5d5d4/example", // easymock
-					changeOrigin: true,
-					rewrite: path => path.replace(/^\/api/, "")
-				},
 				'/abc': {
 					target: 'http://127.0.0.1:3007',
 					ws: true,
