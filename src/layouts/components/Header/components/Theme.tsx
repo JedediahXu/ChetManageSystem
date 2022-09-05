@@ -23,7 +23,7 @@ const Theme = (props: any) => {
 				}}
 			></i>
 			<Drawer
-				title="布局设置"
+				title="主题设置"
 				closable={false}
 				onClose={() => {
 					setVisible(false);
@@ -41,7 +41,7 @@ const Theme = (props: any) => {
 						checkedChildren={<>🌞</>}
 						unCheckedChildren={<>🌜</>}
 						onChange={() => {
-							message.success("欢迎提交 pull request ✨");
+							message.success("暂未开发 ✨");
 						}}
 					/>
 				</div>

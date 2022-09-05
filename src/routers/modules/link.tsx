@@ -13,7 +13,7 @@ const linkRouter: Array<RouteObject> = [
 		children: [
 			{
 				path: "/link/gitee",
-				element: lazyLoad(React.lazy(() => import("@/views/link/gitee/index"))),
+				element: lazyLoad(React.lazy(() => import("@/views/home/index"))),
 				meta: {
 					requiresAuth: true,
 					title: "Gitee 仓库",
@@ -22,7 +22,7 @@ const linkRouter: Array<RouteObject> = [
 			},
 			{
 				path: "/link/github",
-				element: lazyLoad(React.lazy(() => import("@/views/link/github/index"))),
+				element: lazyLoad(React.lazy(() => import("@/views/home/index"))),
 				meta: {
 					requiresAuth: true,
 					title: "GitHub 仓库",
@@ -31,7 +31,7 @@ const linkRouter: Array<RouteObject> = [
 			},
 			{
 				path: "/link/juejin",
-				element: lazyLoad(React.lazy(() => import("@/views/link/juejin/index"))),
+				element: lazyLoad(React.lazy(() => import("@/views/home/index"))),
 				meta: {
 					requiresAuth: true,
 					title: "掘金文档",
@@ -40,7 +40,7 @@ const linkRouter: Array<RouteObject> = [
 			},
 			{
 				path: "/link/myBlog",
-				element: lazyLoad(React.lazy(() => import("@/views/link/myBlog/index"))),
+				element: lazyLoad(React.lazy(() => import("@/views/home/index"))),
 				meta: {
 					requiresAuth: true,
 					title: "个人博客",

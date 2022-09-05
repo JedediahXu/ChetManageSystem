@@ -39,8 +39,6 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 			open: viteEnv.VITE_OPEN,
 			cors: true,
 			// https: false,
-			// 代理跨域（mock 不需要配置，这里只是个事列）
-			//https://mock.mengxuegu.com/mock/630710943b4e0430e6b5d5d4/example
 			proxy: {
 				'/abc': {
 					target: 'http://127.0.0.1:3007',

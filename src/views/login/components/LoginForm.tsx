@@ -24,9 +24,13 @@ const LoginForm = (props: any) => {
 			setLoading(true);
 			loginForm.username = 'ChetSerenade';
 			loginForm.password = loginForm.password;
-			const { data } = await loginApi(loginForm);
-			console.log(data);
+			const { data, code } = await loginApi(loginForm);
 			setToken(data?.access_token);
+			if (code == '200') {
+				message.success("登录成功！");
+			} else {
+				message.error("账号或者密码错误！");
+			}
 			setTabsList([]);
 			navigate(HOME_URL);
 		} finally {
@@ -49,21 +53,10 @@ const LoginForm = (props: any) => {
 			size="large"
 			autoComplete="off"
 		>
-			{/* <Form.Item className="login-name" name="username" rules={[{ required: true, message: "请输入用户名" }]}>
-				<Input placeholder="用户名：admin / user" prefix={<UserOutlined />} />
-			</Form.Item> */}
 			<Form.Item name="password" rules={[{ required: true, message: "请输入密码" }]}>
 				<Input.Password autoComplete="new-password" placeholder="密码：随便输入" prefix={<LockOutlined />} />
 			</Form.Item>
 			<Form.Item className="login-btn login-name">
-				{/* <Button
-					onClick={() => {
-						form.resetFields();
-					}}
-					icon={<CloseCircleOutlined />}
-				>
-					{t("login.reset")}
-				</Button> */}
 				<Button type="primary" htmlType="submit" loading={loading} icon={<UserOutlined />}>
 					{t("login.confirm")}
 				</Button>
