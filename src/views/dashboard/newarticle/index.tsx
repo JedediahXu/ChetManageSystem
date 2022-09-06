@@ -25,6 +25,7 @@ import { store } from "@/redux";
 type SizeType = Parameters<typeof Form>[0]['size'];
 
 const DataMd = () => {
+
 	const { TextArea } = Input;
 	const [form] = Form.useForm();
 	const [value, setValue] = useState('');
@@ -166,7 +167,7 @@ const DataMd = () => {
 					<Form.Item label="图片链接">
 						<div>{textvalue}</div>
 					</Form.Item>
-					<Form.Item label="文章内容" name="value" rules={[{ required: true, message: 'Please input your 文章内容!' }]}>
+					<Form.Item label="文章内容" >
 						<Editor
 							locale={zhHans}
 							value={value}

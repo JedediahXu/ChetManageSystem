@@ -68,9 +68,9 @@ const DataScreen = () => {
 				headers: myHeaders,
 			})
 				.then(res => res.json())
-				.then(() => {
+				.then(json => {
 					setFileList([]);
-					message.success('修改成功！');
+					message.success(`${json.message}`);
 					form.resetFields()
 					setRevise(true)
 				})
