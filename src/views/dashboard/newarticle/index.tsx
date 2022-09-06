@@ -75,6 +75,8 @@ const DataMd = () => {
 			formData.append('cate_id', FromData.cate_id.key); //分类id
 			formData.append('author_id', FromData.cate_id.label); //分类
 			formData.append('content', html) //主题标题
+			formData.append('word_count', FromData.wordCount); //分类
+			formData.append('reading_time', FromData.reading) //主题标题
 		});
 		setUploading(true);
 		fetch('http://127.0.0.1:3007/my/article/addArticle', {
@@ -175,7 +177,12 @@ const DataMd = () => {
 							onChange={v => setValue(v)}
 						/>
 					</Form.Item>
-
+					<Form.Item label="字数" name="wordCount" rules={[{ required: true, message: 'Please input your 标题!' }]}>
+						<Input className='outer-input' />
+					</Form.Item>
+					<Form.Item label="阅读时间" name="reading" rules={[{ required: true, message: 'Please input your 标题!' }]}>
+						<Input className='outer-input' />
+					</Form.Item>
 					<Form.Item label="提交">
 						<Button
 							className='button-Center-left'
