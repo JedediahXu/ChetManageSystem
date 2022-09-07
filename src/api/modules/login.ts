@@ -26,6 +26,12 @@ export const getDelete = (Id: any) => {
 };
 
 
+// * 友情链接
+export const getLint = (params: undefined) => {
+	return http.post(`/abc` + PORT4 + `/article/addLink`, qs.stringify(params));
+};
+
+
 // * 获取按钮权限
 export const getAuthorButtons = () => {
 	return http.get(`/abc` + PORT3 + `/buttons`);

@@ -153,6 +153,11 @@ const DataScreen = () => {
 		fileList,
 	};
 
+	const setMenuList = () => {
+		form.resetFields()
+		setVisible(false)
+	}
+
 	return (
 		<div>
 			<div className='font-size'>新撰文章</div>
@@ -192,7 +197,7 @@ const DataScreen = () => {
 				centered
 				visible={visible}
 				onOk={getMenuList}
-				onCancel={() => setVisible(false)}
+				onCancel={setMenuList}
 				width={800}
 			>
 				<Form
@@ -218,7 +223,7 @@ const DataScreen = () => {
 					</Form.Item>
 				</Form>
 			</Modal>
-		</div>
+		</div >
 	);
 };
 

@@ -12,7 +12,7 @@ const dataScreenRouter: Array<RouteObject> = [
 				element: <DataScreen />,
 				meta: {
 					requiresAuth: true,
-					title: "超级看板",
+					title: "友情链接",
 					key: "dataScreen"
 				}
 			}
