@@ -72,6 +72,7 @@ const DataScreen = () => {
 					setFileList([]);
 					message.success(`${json.message}`);
 					form.resetFields()
+					requestMenuList()
 					setRevise(true)
 				})
 				.catch(() => {
@@ -102,7 +103,7 @@ const DataScreen = () => {
 					setFileList([]);
 					message.success('新增成功！');
 					form.resetFields()
-					setRevise(true)
+					requestMenuList()
 				})
 				.catch(() => {
 					message.error('upload failed.');
@@ -112,7 +113,6 @@ const DataScreen = () => {
 				});
 		}
 		setVisible(false)
-		requestMenuList()
 	};
 
 	// * 修改分类
