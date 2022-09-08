@@ -62,7 +62,7 @@ const DataScreen = () => {
 			});
 
 			setUploading(true);
-			fetch('http://127.0.0.1:3007/my/article/updatecate', {
+			fetch(`/abc`+`/my/article/updatecate`, {
 				method: 'POST',
 				body: formData,
 				headers: myHeaders,
@@ -93,7 +93,7 @@ const DataScreen = () => {
 				formData.append('alias', FromData.title); //标题
 			});
 			setUploading(true);
-			fetch('http://127.0.0.1:3007/my/article/addcates', {
+			fetch(`/abc`+`/my/article/addcates`, {
 				method: 'POST',
 				body: formData,
 				headers: myHeaders,

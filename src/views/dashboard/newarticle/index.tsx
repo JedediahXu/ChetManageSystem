@@ -79,7 +79,7 @@ const DataMd = () => {
 			formData.append('reading_time', FromData.reading) //主题标题
 		});
 		setUploading(true);
-		fetch('http://127.0.0.1:3007/my/article/addArticle', {
+		fetch(`/abc`+`/my/article/addArticle`, {
 			method: 'POST',
 			body: formData,
 			headers: myHeaders,

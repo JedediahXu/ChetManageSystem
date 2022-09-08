@@ -26,7 +26,7 @@ const DataScreen = () => {
 			formData.append('photo', fileList[0] as RcFile);
 			formData.append('thumbnail_photo', fileList[1] as RcFile);
 			setUploading(true);
-			fetch('http://127.0.0.1:3007/my/article/addPhoto', {
+			fetch(`/abc`+`/my/article/addPhoto`, {
 				method: 'POST',
 				body: formData,
 				headers: myHeaders,
