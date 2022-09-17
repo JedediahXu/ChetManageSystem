@@ -49,7 +49,6 @@ const DataScreen = () => {
 
 	const props: UploadProps = {
 		onRemove: file => {
-
 			const index = fileList.indexOf(file);
 			const newFileList = fileList.slice();
 			newFileList.splice(index, 1);

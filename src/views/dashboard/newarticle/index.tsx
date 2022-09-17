@@ -41,7 +41,7 @@ const DataMd = () => {
 	// * 表单请求
 	const props: UploadProps = {
 		name: 'photo',
-		action: 'http://127.0.0.1:3007/api/article/mdPhoto',
+		action: `/abc` + `/api/article/mdPhoto`,
 		headers: {
 			Authorization: token,
 		},
@@ -79,7 +79,7 @@ const DataMd = () => {
 			formData.append('reading_time', FromData.reading) //主题标题
 		});
 		setUploading(true);
-		fetch(`/abc`+`/my/article/addArticle`, {
+		fetch(`/abc` + `/my/article/addArticle`, {
 			method: 'POST',
 			body: formData,
 			headers: myHeaders,
